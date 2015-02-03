@@ -61,11 +61,11 @@ module Api
       end
     end
 
-    delete "/thing/:id/?", :provides => :json do
+    delete "/cab/:id/?", :provides => :json do
       content_type :json
 
-      if thing = Thing.first(:id => params[:id].to_i)
-        thing.destroy!
+      if cab = Cab.first(:id => params[:id].to_i)
+        cab.destroy!
         status 204
       else
         json_status 404, "Not found"

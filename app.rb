@@ -3,4 +3,5 @@ Bundler.require
 
 require './helpers'
 require './model'
-require './routes'
+require './routes/passenger'
+require './routes/cab'

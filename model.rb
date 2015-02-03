@@ -16,15 +16,15 @@ class Passenger
   property :name, String
   property :email, String
   property :password, BCryptHash, :reader => :protected
-  property :longitude, String
-  property :latitude, String
+  property :longitude, Float
+  property :latitude, Float
   property :up_votes, Integer, default: 0
   property :down_votes, Integer, default: 0
   property :created_at, Time
   property :updated_at, Time
 end
 
-class CabDriver
+class Cab
   include DataMapper::Resource
 
   property :id, Serial, key: true
@@ -32,11 +32,11 @@ class CabDriver
   property :email, String
   property :password, BCryptHash
   property :password, BCryptHash
-  property :geo_longitude, String
-  property :geo_latitude, String
+  property :geo_longitude, Float
+  property :geo_latitude, Float
   property :up_votes, Integer, default: 0
   property :down_votes, Integer, default: 0
-  property :busy, Integer, default: false
+  property :busy, Boolean, default: false
   property :created_at, Time
   property :updated_at, Time
 end
