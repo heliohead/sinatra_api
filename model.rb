@@ -31,7 +31,7 @@ class Cab
   property :name, String
   property :email, String
   property :password, BCryptHash
-  property :password, BCryptHash
+  property :service_type, String
   property :geo_longitude, Float
   property :geo_latitude, Float
   property :up_votes, Integer, default: 0

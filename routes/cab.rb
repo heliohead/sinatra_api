@@ -27,7 +27,7 @@ module Api
     post "/cab/?", :provides => :json do
       content_type :json
 
-      new_params = accept_params(params, :name, :email, :password, :latitude, :longitude)
+      new_params = accept_params(params, :name, :email, :password, :latitude, :longitude, :service_type)
 
       cab = Cab.new(new_params)
       if cab.save
@@ -42,7 +42,7 @@ module Api
     patch "/cab/:id/edit", :provides => :json do
       content_type :json
 
-      new_params = accept_params(params, :name, :email, :password, :latitude, :longitude)
+      new_params = accept_params(params, :name, :email, :password, :latitude, :longitude, :service_type)
 
       if Cab.valid_id?(params[:id])
         if cab = Cab.first_or_create(:id => params[:id].to_i)
