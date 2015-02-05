@@ -25,7 +25,7 @@ module Api
       end
     end
 
-    post "/passenger/?", :provides => :json do
+    post "/passenger/new/?", :provides => :json do
       content_type :json
 
       new_params = accept_params(params, :name, :email, :password, :address)
