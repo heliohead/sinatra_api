@@ -10,6 +10,8 @@ class Passenger < ActiveRecord::Base
   after_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? }
   validates_presence_of :name, :password, :email
   validates_uniqueness_of :email
+  has_many :cabs, through: :rides
+  has_many :rides
 end
 
 class Cab < ActiveRecord::Base
@@ -19,4 +21,11 @@ class Cab < ActiveRecord::Base
   after_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? }
   validates_presence_of :name, :password, :email
   validates_uniqueness_of :email
+  has_many :passengers, through: :rides
+  has_many :rides
+end
+
+class Ride < ActiveRecord::Base
+  belongs_to :passengers
+  belongs_to :cabs
 end
