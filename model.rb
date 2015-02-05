@@ -28,4 +28,5 @@ end
 class Ride < ActiveRecord::Base
   belongs_to :passengers
   belongs_to :cabs
+  validates_presence_of :starts_at, :ends_at
 end

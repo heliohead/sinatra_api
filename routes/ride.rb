@@ -65,10 +65,10 @@ near
       end
     end
 
-    get "/ride/cabs_near/?", :provides => :json do
+    post "/ride/cabs_near/?", :provides => :json do
       content_type :json
 
-      if cabs_near = Cab.near(params[:address])
+      if cabs_near = Cab.near(params[:address],10)
         cabs_near.to_json
       else
         json_status 404, "Not found"
