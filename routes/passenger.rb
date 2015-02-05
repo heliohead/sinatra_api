@@ -1,5 +1,9 @@
 module Api
-  class Routes < Sinatra::Base
+  class App < Sinatra::Base
+    get '/' do
+      'Taxi Cab API'.to_json
+    end
+
     get "/passenger/?", :provides => :json do
       content_type :json
 
@@ -13,21 +17,18 @@ module Api
 
     get "/passenger/:id", :provides => :json do
       content_type :json
-      if Passenger.valid_id?(params[:id])
-        if passenger = Passenger.first(:id => params[:id].to_i)
-          passenger.to_json
-        else
-          json_status 404, "Not found"
-        end
+
+      if passenger = Passenger.find_by_id(params[:id].to_i)
+        passenger.to_json
       else
-        json_status 400, "Invalid data id must be an integer"
+        json_status 404, "Not found"
       end
     end
 
     post "/passenger/?", :provides => :json do
       content_type :json
 
-      new_params = accept_params(params, :name, :email, :password, :latitude, :longitude)
+      new_params = accept_params(params, :name, :email, :password, :address)
 
       passenger = Passenger.new(new_params)
       if passenger.save
@@ -35,37 +36,33 @@ module Api
         status 201
         passenger.to_json
       else
-        json_status 400, passenger.errors.to_hash
+        json_status 400, passenger.errors.full_messages
       end
     end
 
     patch "/passenger/:id/edit", :provides => :json do
       content_type :json
 
-      new_params = accept_params(params, :name, :email, :password, :latitude, :longitude)
+      new_params = accept_params(params, :name, :password, :address, :up_votes, :down_votes)
 
-      if Passenger.valid_id?(params[:id])
-        if passenger = Passenger.first_or_create(:id => params[:id].to_i)
-          passenger.attributes = passenger.attributes.merge(new_params)
-          if passenger.save
-            status 200
-            passenger.to_json
-          else
-            json_status 400, passenger.errors.to_hash
-          end
+      if passenger = Passenger.find_by_id(params[:id].to_i)
+        passenger.update(new_params)
+        if passenger.save
+          status 200
+          passenger.to_json
         else
-          json_status 404, "Not found"
+          json_status 400, passenger.errors.to_hash
         end
       else
-        json_status 400, "Invalid data id must be an integer"
+        json_status 404, "Not found"
       end
     end
 
-    delete "/cab/:id/?", :provides => :json do
+    delete "/passenger/:id/?", :provides => :json do
       content_type :json
 
-      if cab = Cab.first(:id => params[:id].to_i)
-        cab.destroy!
+      if passenger = Passenger.find_by_id(params[:id].to_i)
+        passenger.destroy!
         status 204
       else
         json_status 404, "Not found"

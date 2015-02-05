@@ -1,7 +1,7 @@
-require 'bundler'
-Bundler.require
+require 'sinatra'
+require 'sinatra/activerecord'
 
-require './helpers'
 require './model'
+require './helpers'
 require './routes/passenger'
 require './routes/cab'

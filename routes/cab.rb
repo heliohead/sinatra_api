@@ -1,5 +1,9 @@
 module Api
-  class Routes < Sinatra::Base
+  class App < Sinatra::Base
+    get '/' do
+      'Taxi Cab API'.to_json
+    end
+
     get "/cab/?", :provides => :json do
       content_type :json
 
@@ -13,21 +17,18 @@ module Api
 
     get "/cab/:id", :provides => :json do
       content_type :json
-      if Cab.valid_id?(params[:id])
-        if cab = Cab.first(:id => params[:id].to_i)
-          cab.to_json
-        else
-          json_status 404, "Not found"
-        end
+
+      if cab = Cab.find_by_id(params[:id].to_i)
+        cab.to_json
       else
-        json_status 400, "Invalid data id must be an integer"
+        json_status 404, "Not found"
       end
     end
 
     post "/cab/?", :provides => :json do
       content_type :json
 
-      new_params = accept_params(params, :name, :email, :password, :latitude, :longitude, :service_type)
+      new_params = accept_params(params, :name, :email, :password, :address)
 
       cab = Cab.new(new_params)
       if cab.save
@@ -35,36 +36,32 @@ module Api
         status 201
         cab.to_json
       else
-        json_status 400, cab.errors.to_hash
+        json_status 400, cab.errors.full_messages
       end
     end
 
     patch "/cab/:id/edit", :provides => :json do
       content_type :json
 
-      new_params = accept_params(params, :name, :email, :password, :latitude, :longitude, :service_type)
+      new_params = accept_params(params, :name, :password, :address, :up_votes, :down_votes)
 
-      if Cab.valid_id?(params[:id])
-        if cab = Cab.first_or_create(:id => params[:id].to_i)
-          cab.attributes = cab.attributes.merge(new_params)
-          if cab.save
-            status 200
-            cab.to_json
-          else
-            json_status 400, cab.errors.to_hash
-          end
+      if cab = Cab.find_by_id(params[:id].to_i)
+        cab.update(new_params)
+        if cab.save
+          status 200
+          cab.to_json
         else
-          json_status 404, "Not found"
+          json_status 400, cab.errors.to_hash
         end
       else
-        json_status 400, "Invalid data id must be an integer"
+        json_status 404, "Not found"
       end
     end
 
     delete "/cab/:id/?", :provides => :json do
       content_type :json
 
-      if cab = Cab.first(:id => params[:id].to_i)
+      if cab = Cab.find_by_id(params[:id].to_i)
         cab.destroy!
         status 204
       else

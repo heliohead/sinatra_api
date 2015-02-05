@@ -1,5 +1,5 @@
 module Api
-  class Routes < Sinatra::Base
+  class App < Sinatra::Base
     helpers do
       def json_status(code, reason)
         status code
