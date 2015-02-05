@@ -5,8 +5,14 @@ gem 'rake'
 gem 'sinatra'
 gem 'sinatra-activerecord'
 gem 'activerecord'
-gem 'pry'
-gem 'pry-byebug'
 gem 'geocoder'
 gem 'bcrypt'
 gem 'unicorn'
+
+group :test, :development do
+  gem 'airborne'
+  gem 'pry'
+  gem 'pry-byebug'
+  gem "rspec"
+  gem "rack-test"
+end
