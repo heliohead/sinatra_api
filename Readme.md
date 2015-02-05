@@ -83,3 +83,4 @@ $ rspec
 ### To do
 - More test
 - Add Simulation rides price
+- Oauth
