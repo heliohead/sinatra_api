@@ -7,7 +7,7 @@ class Passenger < ActiveRecord::Base
   extend Geocoder::Model::ActiveRecord
   has_secure_password
   geocoded_by :address
-  after_validation :geocode
+  after_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? }
   validates_presence_of :name, :password, :email
   validates_uniqueness_of :email
 end
@@ -16,7 +16,7 @@ class Cab < ActiveRecord::Base
   extend Geocoder::Model::ActiveRecord
   has_secure_password
   geocoded_by :address
-  after_validation :geocode
+  after_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? }
   validates_presence_of :name, :password, :email
   validates_uniqueness_of :email
 end
