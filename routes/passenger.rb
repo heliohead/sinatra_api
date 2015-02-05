@@ -1,8 +1,5 @@
 module Api
   class App < Sinatra::Base
-    get '/' do
-      'Taxi Cab API'.to_json
-    end
 
     get "/passenger/?", :provides => :json do
       content_type :json
