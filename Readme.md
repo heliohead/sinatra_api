@@ -6,6 +6,7 @@
 - Json
 - Geocoder
 - Sqlite
+- Rspec
 
 ### How to run
 
@@ -72,6 +73,12 @@ $ curl -i -H 'Accept: application/json'  -X DELETE \
 $ curl -i -H 'Accept: application/json' \
        -d 'cab_id=2&passanger_id=1&starts_at=AV+Brigadeiro+Faria+Lima&ends_at=Av+São+João' \
        http://localhost:9292/ride/new
+```
+
+### To test
+
+```bash
+$ rspec
 ```
 ### To do
 - More test
